@@ -59,13 +59,28 @@ describe SessionsController do
 	end
   end
   
-	describe "DELETE 'destroy'" do
+  describe "DELETE 'destroy'" do
 
 	it "should sign a user out" do
 	  test_sign_in(Factory(:user))
 	  delete :destroy
 	  controller.should_not be_signed_in
 	  response.should redirect_to(root_path)
+	end
+  end
+  
+  describe "Redirect to HTTPS" do
+	
+	it "should redirect to HTTPS for create user" do
+		@request.env['HTTPS'] = nil
+		get :new
+		assert_redirected_to "https://" + @request.host + @request.request_uri
+	end
+	
+	it "should redirect to HTTPS for new user" do
+		@request.env['HTTPS'] = nil
+		get :create
+		assert_redirected_to "https://" + @request.host + @request.request_uri
 	end
   end
 end
