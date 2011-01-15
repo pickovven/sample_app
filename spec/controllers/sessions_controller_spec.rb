@@ -69,18 +69,18 @@ describe SessionsController do
 	end
   end
   
-  describe "Redirect to HTTPS" do
+#  describe "Redirect to HTTPS" do
+#	
+#	it "should redirect to HTTPS for create user" do
+#		@request.env['HTTPS'] = nil
+#		get :new
+#		assert_redirected_to "https://" + @request.host + @request.request_uri
+#	end
 	
-	it "should redirect to HTTPS for create user" do
-		@request.env['HTTPS'] = nil
-		get :new
-		assert_redirected_to "https://" + @request.host + @request.request_uri
-	end
-	
-	it "should redirect to HTTPS for new user" do
-		@request.env['HTTPS'] = nil
-		get :create
-		assert_redirected_to "https://" + @request.host + @request.request_uri
-	end
-  end
+#	it "should redirect to HTTPS for new user" do
+#		@request.env['HTTPS'] = nil
+#		get :create
+#		assert_redirected_to "https://" + @request.host + @request.request_uri
+#	end
+#  end
 end
