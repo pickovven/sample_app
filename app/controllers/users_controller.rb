@@ -14,21 +14,31 @@ before_filter :admin_user,   :only => :destroy
   end
   
   def new
-    @user = User.new
-    @title = "Sign up"
+    if current_user.nil?
+      @user = User.new
+      @title = "Sign up"
+    else
+      @user = current_user
+      render "show"
+    end
   end
 
   def create
-    @user = User.new(params[:user])
-    if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+    if current_user.nil?
+      @user = User.new(params[:user])
+      if @user.save
+        sign_in @user
+        flash[:success] = "Welcome to the Sample App!"
+        redirect_to @user
+      else
+        @title = "Sign up"
+        @user.password = ""
+        @user.password_confirmation = ""
+        render 'new'
+      end
     else
-      @title = "Sign up"
-      @user.password = ""
-      @user.password_confirmation = ""
-      render 'new'
+      @user = current_user
+      render "show"
     end
   end
 
@@ -43,14 +53,20 @@ before_filter :admin_user,   :only => :destroy
       redirect_to @user
     else
       @title = "Edit user"
-      render 'edit'
+      render "edit"
     end
   end
 
-def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
-    redirect_to users_path
+  def destroy
+    @user = User.find(params[:id])
+    if current_user == @user
+      flash[:error] = "Cannot delete yourself."
+      redirect_to users_path
+    else
+      @user.destroy    
+      flash[:success] = "User destroyed."
+      redirect_to users_path
+    end
   end
 
   private
