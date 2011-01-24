@@ -136,11 +136,11 @@ td.sidebar {
 
 .profile img.gravatar {
   border: 1px solid #999;
-  margin-bottom: -15px;
+  margin-bottom: 0px;
 }
 
 div.field, div.actions {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 /* Error Styling */
@@ -250,3 +250,25 @@ form.new_micropost textarea {
   width: 450px;
   margin-bottom: 0;
 }
+
+/* Ordered Lists for Microposts */
+
+ul.micropost li {
+  border-top: 1px solid #ccc;
+  vertical-align: top;
+  padding-top: 10px;
+  list-style-type: none;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  
+}
+
+ul.micropost li.micropost span.delete {
+  vertical-align: center;
+  text-align: right;
+  float: right;
+  padding-right: 10px;
+}
+
+
+

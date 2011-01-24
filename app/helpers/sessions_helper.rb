@@ -52,6 +52,12 @@ module SessionsHelper
 	return out
   end
   
+  def alternate_colors
+    color = "$('ul > li').filter(':nth-child(odd)').css('background', '#FDD')
+    .end().filter(':nth-child(even)').css('background', '#FFD');"
+    out = color
+  end
+  
   private
 
 	def user_from_remember_token

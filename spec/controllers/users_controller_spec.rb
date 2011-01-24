@@ -98,7 +98,12 @@ describe UsersController do
   describe "GET 'show'" do
 
    before(:each) do
-     @user = Factory(:user)
+     @user = test_sign_in(Factory(:user))
+     @mp1 = Factory(:micropost, :user => @user, :content => "Foo bar")
+     @mp2 = Factory(:micropost, :user => @user, :content => "Baz quux")
+     @mp3 = Factory(:micropost, :user => @user, :content => "Ba quux")
+     @mp4 = Factory(:micropost, :user => @user, :content => "Baz uux")
+     @mp5 = Factory(:micropost, :user => @user, :content => "Baz qux")
    end
 
    it "should be successful" do
@@ -127,13 +132,26 @@ describe UsersController do
    end
 
    it "should show the user's microposts" do
-      mp1 = Factory(:micropost, :user => @user, :content => "Foo bar")
-      mp2 = Factory(:micropost, :user => @user, :content => "Baz quux")
+     get :show, :id => @user
+     response.should have_selector("span.content", :content => @mp1.content)
+     response.should have_selector("span.content", :content => @mp2.content)
+   end
+    
+    it "should have the correct count of microposts" do
       get :show, :id => @user
-      response.should have_selector("span.content", :content => mp1.content)
-      response.should have_selector("span.content", :content => mp2.content)
+      response.should have_selector("span.microposts", :content => (@user.microposts.count).to_s + " microposts" ) 
+    end
+    
+    it "should show the right pagination" do
+      50.times do
+        Factory(:micropost, :user => @user, :content => "blah blah blah")
+      end
+      get :show, :id => @user
+      response.should have_selector("a", :content => "2")
     end
   end
+
+
 
   describe "POST 'create'" do
 
@@ -297,6 +315,11 @@ describe UsersController do
       it "should require matching users for 'update'" do
         put :update, :id => @user, :user => {}
         response.should redirect_to(root_path)
+      end
+      
+      it "should not show delete action" do
+       get :show, :id => @user
+       response.should_not have_selector("a", :content => "delete")
       end
     end
   end
