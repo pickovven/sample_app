@@ -1,6 +1,8 @@
 <% if signed_in? %>
   <table class="front" summary="For signed-in users">
     <%= render 'users/landing' %>
+    <%= render 'shared/user_info' %>
+    <%= render 'shared/stats' %>
   </table>
 <% else %>
   <h1>Sample App</h1>

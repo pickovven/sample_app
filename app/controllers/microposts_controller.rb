@@ -3,7 +3,8 @@ class MicropostsController < ApplicationController
   before_filter :authorized_user, :only => :destroy
 
   def index
-	redirect_to user_path(:show)
+	user = @user.user_id
+	@micropost  = @user.microposts.paginate(:page => params[:page])
   end
 
   def create
